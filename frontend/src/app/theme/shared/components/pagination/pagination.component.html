@@ -1,0 +1,25 @@
+<nav aria-label="Page navigation" class="mt-4" *ngIf="totalCount > 0">
+  <ul class="pagination justify-content-center mb-2" *ngIf="totalPages > 1">
+    <li class="page-item" [class.disabled]="!hasPreviousPage">
+      <a class="page-link shadow-none" (click)="onPageChange(pageNumber - 1)" [attr.aria-disabled]="!hasPreviousPage" href="javascript:void(0)">
+        <i class="fas fa-chevron-left"></i>
+      </a>
+    </li>
+
+    <li class="page-item" *ngFor="let page of pages" [class.active]="page === pageNumber">
+      <a class="page-link shadow-none" (click)="onPageChange(page)" href="javascript:void(0)">{{ page }}</a>
+    </li>
+
+    <li class="page-item" [class.disabled]="!hasNextPage">
+      <a class="page-link shadow-none" (click)="onPageChange(pageNumber + 1)" [attr.aria-disabled]="!hasNextPage" href="javascript:void(0)">
+        <i class="fas fa-chevron-right"></i>
+      </a>
+    </li>
+  </ul>
+  
+  <div class="text-center text-muted small">
+    Hiển thị <span class="fw-bold">{{ (pageNumber - 1) * pageSize + 1 }}</span> - 
+    <span class="fw-bold">{{ Math.min(pageNumber * pageSize, totalCount) }}</span> 
+    trong tổng số <span class="fw-bold">{{ totalCount }}</span> mục
+  </div>
+</nav>

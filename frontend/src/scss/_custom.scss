@@ -1,0 +1,129 @@
+body {
+  line-height: 1.5;
+
+  td,
+  th {
+    font-family: 'Open Sans', sans-serif;
+  }
+}
+header {
+  width: 100%;
+}
+
+.form-control {
+  height: auto;
+}
+
+@media only screen and (max-width: 575px) {
+  .pcoded-header .dropdown .dropdown-menu {
+    left: 0 !important;
+  }
+
+  wizard.vertical .vertical a {
+    display: none;
+  }
+}
+
+.pcoded-header .dropdown.show:before {
+  left: -10px !important;
+}
+
+pre code {
+  width: auto;
+  min-width: 100%;
+  margin-left: -80px !important;
+}
+
+.btn.btn-sm {
+  padding: 3px 12px;
+  border-radius: 0.15rem;
+}
+
+.btn.btn-lg {
+  padding: 12px 25px;
+  border-radius: 0.35rem;
+}
+
+.fixed-button {
+  position: fixed;
+  bottom: -50px;
+  right: 30px;
+  -webkit-box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  z-index: 9;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  .btn {
+    margin-bottom: 0;
+    margin-right: 0;
+  }
+}
+
+.fixed-button.active {
+  bottom: 50px;
+  opacity: 1;
+}
+
+/* Global Admin Badge Styles */
+.badge {
+  font-weight: 700;
+  padding: 0.6em 1.2em;
+  font-size: 85%;
+  letter-spacing: 0.5px;
+  border-radius: 4px;
+}
+
+.status-badge {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid transparent;
+  display: inline-block;
+}
+
+.bg-light-success, .badge.bg-light-success {
+  background-color: #e6f7ef !important;
+  color: #28a745 !important;
+  border: 1px solid #c3e6cb !important;
+}
+
+.bg-light-info, .badge.bg-light-info {
+  background-color: #e7f6f8 !important;
+  color: #17a2b8 !important;
+  border: 1px solid #bee5eb !important;
+}
+
+.bg-light-warning, .badge.bg-light-warning {
+  background-color: #fff8e6 !important;
+  color: #856404 !important;
+  border: 1px solid #ffeeba !important;
+}
+
+.bg-light-primary, .badge.bg-light-primary {
+  background-color: #e7f0ff !important;
+  color: #007bff !important;
+  border: 1px solid #b8daff !important;
+}
+
+.bg-light-danger, .badge.bg-light-danger {
+  background-color: #feebe6 !important;
+  color: #dc3545 !important;
+  border: 1px solid #f5c6cb !important;
+}
+
+.bg-light-secondary, .badge.bg-light-secondary {
+  background-color: #f8f9fa !important;
+  color: #6c757d !important;
+  border: 1px solid #d6d8db !important;
+}
+
+/* Modal Smooth Animation */
+.modal-smooth {
+  &.fade .modal-dialog {
+    transform: scale(0.8) translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  &.show .modal-dialog {
+    transform: scale(1) translateY(0);
+  }
+}
+

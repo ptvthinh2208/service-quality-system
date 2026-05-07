@@ -1,0 +1,69 @@
+// =======================================
+//     Shared Mixins & Animations
+// =======================================
+
+@use 'sass:color';
+@use 'variables' as var;
+
+// Base transition for elements
+@mixin transition($speed: var.$transition-base) {
+  transition: $speed;
+}
+
+// Hover lift effect used in many cards
+@mixin hover-lift($translate: -5px, $shadow: var.$shadow-lg) {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY($translate);
+    box-shadow: $shadow;
+  }
+}
+
+// Glassmorphism effect
+@mixin glass-card($blur: 10px, $opacity: 0.1) {
+  background: rgba(255, 255, 255, $opacity);
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+// Reflection overlay for metallic/glass cards
+@mixin glass-reflection {
+  position: absolute;
+  top: -60%;
+  left: -60%;
+  width: 250%;
+  height: 250%;
+  background: linear-gradient(to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.08) 50%,
+      rgba(255, 255, 255, 0) 100%);
+  transform: rotate(35deg);
+  pointer-events: none;
+  z-index: 0;
+}
+
+// Noise overlay for texture
+@mixin card-noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 0;
+}
+
+// Modern alternate to darken/lighten (fixes deprecation warnings)
+@function adjust-color($color, $lightness) {
+  @return color.adjust($color, $lightness: $lightness);
+}
+
+// Flex center helper
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

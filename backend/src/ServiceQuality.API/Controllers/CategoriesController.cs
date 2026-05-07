@@ -8,7 +8,7 @@ namespace ServiceQuality.API.Controllers;
 /// Tiêu chí đánh giá — Public API cho Flutter App
 /// </summary>
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/[controller]")]
 public class CategoriesController : ControllerBase
 {
     private readonly ICategoryService _service;
