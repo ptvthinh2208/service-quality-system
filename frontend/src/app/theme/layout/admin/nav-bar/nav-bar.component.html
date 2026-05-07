@@ -1,0 +1,34 @@
+<header>
+  <!-- Mobile Header: Chỉ hiện ở màn hình nhỏ (d-lg-none) -->
+  <div class="m-header d-flex align-items-center d-lg-none" [style.display]="this.headerStyle">
+    <!-- Nút Hamburger Menu (Mobile) -->
+    <a class="mobile-menu position-relative" [ngClass]="{ on: navCollapsed }" id="mobile-collapse1" href="javascript:void(0)"
+      (click)="this.NavCollapsedMob.emit()" style="width: 40px; left: 0; right: auto; margin-right: 10px;">
+      <span></span>
+    </a>
+    
+    <!-- Logo Mobile -->
+    <a [routerLink]="['/dashboard/default']" class="b-brand text-decoration-none">
+      <span class="fs-5 fw-bold text-dark">NUTRIHEALTH</span>
+    </a>
+
+    <!-- User Menu (Avatar) bên phải cho Mobile -->
+    <div class="ms-auto me-2">
+      <app-nav-right />
+    </div>
+  </div>
+  
+  <!-- Nút Toggle Sidebar trên PC: Chỉ hiện ở màn hình lớn (d-none d-lg-flex) -->
+  <a class="mobile-menu d-none d-lg-flex" [ngClass]="{ on: navCollapsed }" id="mobile-collapse" href="javascript:void(0)"
+    (click)="this.NavCollapse.emit()" style="left: 0; right: auto; position: relative; margin-left: 20px;">
+    <span></span>
+  </a>
+
+  <!-- PC Top Bar Content -->
+  <div class="collapse navbar-collapse px-4" [style.display]="this.collapseStyle">
+    <app-nav-left class="me-auto" [style.display]="this.headerStyle" />
+    <!-- User Menu cho PC -->
+    <app-nav-right class="ms-auto d-none d-lg-block" />
+  </div>
+</header>
+<div class="pc-menu-overlay" (click)="closeMenu()" (keydown)="handleKeyDown($event)" tabindex="0"></div>

@@ -1,0 +1,42 @@
+<ul class="navbar-nav">
+  <li>
+    <div class="dropdown drp-user" ngbDropdown placement="auto">
+      <a href="javascript:void(0)" ngbDropdownToggle class="dropdown-toggle text-decoration-none">
+        <img src="assets/images/user/avatar-2.jpg" class="img-radius" alt="User-Profile-Image"
+          style="width: 35px; height: 35px;" />
+        <span style="color:steelblue" class="ms-2 d-none d-lg-inline-block">{{ userInfo()?.fullName ||
+          userInfo()?.username || 'Khách hàng'
+          }}</span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-end profile-notification" ngbDropdownMenu>
+        <div class="pro-head">
+          <img src="assets/images/user/avatar-2.jpg" class="img-radius" alt="User-Profile-Image" />
+          <span>{{ userInfo()?.fullName || userInfo()?.username || 'Khách hàng' }}</span>
+          <a [routerLink]="" (click)="logout()" class="dud-logout" title="Đăng xuất">
+            <i class="feather icon-log-out"></i>
+          </a>
+        </div>
+        <ul class="pro-body">
+          <li>
+            <a [routerLink]="['/profile']" class="dropdown-item">
+              <i class="feather icon-user"></i>
+              Trang cá nhân
+            </a>
+          </li>
+          <li>
+            <a [routerLink]="['/customer/my-bookings']" class="dropdown-item">
+              <i class="feather icon-list"></i>
+              Lịch đặt của tôi
+            </a>
+          </li>
+          <!-- <li>
+            <a (click)="logout()" class="dropdown-item">
+              <i class="feather icon-log-out"></i>
+              Đăng xuất
+            </a>
+          </li> -->
+        </ul>
+      </div>
+    </div>
+  </li>
+</ul>

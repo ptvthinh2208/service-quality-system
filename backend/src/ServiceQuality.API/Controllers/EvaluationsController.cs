@@ -8,7 +8,7 @@ namespace ServiceQuality.API.Controllers;
 /// Gửi đánh giá — Public API cho Flutter App (không cần auth)
 /// </summary>
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/[controller]")]
 public class EvaluationsController : ControllerBase
 {
     private readonly IEvaluationService _service;
@@ -34,7 +34,7 @@ public class EvaluationsController : ControllerBase
 /// App-wide config — Public API cho Flutter App
 /// </summary>
 [ApiController]
-[Route("api/v1/app-config")]
+[Route("api/app-config")]
 public class AppConfigController : ControllerBase
 {
     private readonly IAppConfigService _service;

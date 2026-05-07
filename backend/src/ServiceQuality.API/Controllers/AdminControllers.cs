@@ -11,7 +11,7 @@ namespace ServiceQuality.API.Controllers;
 /// </summary>
 [Authorize]
 [ApiController]
-[Route("api/v1/admin/categories")]
+[Route("api/admin/categories")]
 public class AdminCategoriesController : ControllerBase
 {
     private readonly ICategoryService _service;
@@ -74,7 +74,7 @@ public class AdminCategoriesController : ControllerBase
 /// </summary>
 [Authorize]
 [ApiController]
-[Route("api/v1/admin/evaluations")]
+[Route("api/admin/evaluations")]
 public class AdminEvaluationsController : ControllerBase
 {
     private readonly IEvaluationService _service;
@@ -100,7 +100,7 @@ public class AdminEvaluationsController : ControllerBase
 /// </summary>
 [Authorize]
 [ApiController]
-[Route("api/v1/admin/dashboard")]
+[Route("api/admin/dashboard")]
 public class AdminDashboardController : ControllerBase
 {
     private readonly IDashboardService _service;
@@ -126,7 +126,7 @@ public class AdminDashboardController : ControllerBase
 /// </summary>
 [Authorize]
 [ApiController]
-[Route("api/v1/admin/reports")]
+[Route("api/admin/reports")]
 public class AdminReportsController : ControllerBase
 {
     private readonly IReportService _service;
@@ -145,7 +145,7 @@ public class AdminReportsController : ControllerBase
 /// Auth Controller — Đăng nhập Admin
 /// </summary>
 [ApiController]
-[Route("api/v1/auth")]
+[Route("api/auth")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _service;

@@ -1,0 +1,81 @@
+<div class="auth-wrapper">
+  <div class="auth-content">
+    <div class="auth-bg">
+      <span class="r"></span>
+      <span class="r s"></span>
+      <span class="r s"></span>
+      <span class="r"></span>
+    </div>
+    <div class="card">
+      <div class="card-body text-center">
+        <div class="mb-4 text-center w-100">
+          <h2 class="fw-bold text-primary">NUTRIHEALTH</h2>
+        </div>
+        <h3 class="mb-4">Đăng Ký Tài Khoản</h3>
+
+        <!-- Thông báo lỗi/thành công -->
+        @if (errorMessage()) {
+        <div class="alert alert-danger mb-3 text-start" style="white-space: pre-line;">{{ errorMessage() }}</div>
+        }
+        @if (successMessage()) {
+        <div class="alert alert-success mb-3 text-start">{{ successMessage() }}</div>
+        }
+
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+
+          <!-- Thông tin cá nhân -->
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" formControlName="username" placeholder="Tên đăng nhập"
+              [class.is-invalid]="submitted() && f['username'].invalid" />
+            @if (submitted() && f['username'].invalid) { <div class="invalid-feedback">Tên đăng nhập bắt buộc (tối thiểu
+              4 ký tự).</div> }
+          </div>
+
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" formControlName="fullName" placeholder="Họ và tên"
+              [class.is-invalid]="submitted() && f['fullName'].invalid" (input)="onFullNameInput($event)" />
+            @if (submitted() && f['fullName'].invalid) { <div class="invalid-feedback">Họ tên bắt buộc.</div> }
+          </div>
+
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" formControlName="phoneNumber" placeholder="Số điện thoại"
+              [class.is-invalid]="submitted() && f['phoneNumber'].invalid" />
+            @if (submitted() && f['phoneNumber'].invalid) { <div class="invalid-feedback">Số điện thoại không hợp lệ.
+            </div> }
+          </div>
+
+
+
+          <div class="input-group mb-3">
+            <input [type]="showPassword() ? 'text' : 'password'" class="form-control" formControlName="password"
+              placeholder="Mật khẩu" [class.is-invalid]="submitted() && f['password'].invalid" />
+            @if (submitted() && f['password'].invalid) { <div class="invalid-feedback">Mật khẩu bắt buộc (tối thiểu 6 ký
+              tự).</div> }
+          </div>
+
+          <div class="input-group mb-4">
+            <input [type]="showPassword() ? 'text' : 'password'" class="form-control" formControlName="confirmPassword"
+              placeholder="Xác nhận mật khẩu" [class.is-invalid]="submitted() && signupForm.errors?.['mismatch']" />
+            @if (submitted() && signupForm.errors?.['mismatch']) { <div class="invalid-feedback">Mật khẩu xác nhận không
+              khớp.</div> }
+          </div>
+
+          <div class="input-group mb-4">
+            <input type="email" class="form-control" formControlName="email" placeholder="Email (nếu có)"
+              [class.is-invalid]="submitted() && f['email'].invalid" />
+          </div>
+
+          <button type="submit" class="btn btn-primary mb-4 w-100" [disabled]="loading()">
+            @if (loading()) { <span class="spinner-border spinner-border-sm me-2"></span> Đang xử lý... }
+            @else { Đăng Ký Ngay }
+          </button>
+        </form>
+
+        <p class="mb-0 text-muted">
+          Đã có tài khoản?
+          <a [routerLink]="['/login']" class="fw-bold">Đăng Nhập</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

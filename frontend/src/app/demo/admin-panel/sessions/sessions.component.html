@@ -1,0 +1,246 @@
+<div class="sessions-container">
+  <div class="page-header d-flex justify-content-between align-items-center">
+    <div>
+      <span class="badge-label">Phân tích Phản hồi</span>
+      <h2 class="fw-bold mt-2 mb-0 text-dark">Lịch sử Đánh giá</h2>
+      <p class="text-muted mb-0">Theo dõi và xuất báo cáo chi tiết các phiên đánh giá từ khách hàng.</p>
+    </div>
+    <button class="btn btn-success rounded-pill px-4 fw-bold shadow-sm" [disabled]="isExporting()" (click)="exportExcel()">
+      @if (isExporting()) {
+        <span class="spinner-border spinner-border-sm me-1"></span> Đang xuất...
+      } @else {
+        <i class="feather icon-file-text me-2"></i> Xuất Excel
+      }
+    </button>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="filter-card card border-0 shadow-sm mb-4">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-3">
+        <label class="form-label small fw-bold text-uppercase text-muted">Từ ngày</label>
+        <div class="input-group">
+          <input class="form-control" placeholder="dd/mm/yyyy" name="dpFrom" [(ngModel)]="fromDateModel" ngbDatepicker #dFrom="ngbDatepicker" container="body">
+          <button class="btn btn-outline-secondary feather icon-calendar" (click)="dFrom.toggle()" type="button"></button>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label small fw-bold text-uppercase text-muted">Đến ngày</label>
+        <div class="input-group">
+          <input class="form-control" placeholder="dd/mm/yyyy" name="dpTo" [(ngModel)]="toDateModel" ngbDatepicker #dTo="ngbDatepicker" container="body">
+          <button class="btn btn-outline-secondary feather icon-calendar" (click)="dTo.toggle()" type="button"></button>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label small fw-bold text-uppercase text-muted">Điểm tối thiểu</label>
+        <select class="form-select" [(ngModel)]="filter.minScore">
+          <option [ngValue]="undefined">Tất cả</option>
+          <option [ngValue]="1">1 sao</option>
+          <option [ngValue]="2">2 sao</option>
+          <option [ngValue]="3">3 sao</option>
+          <option [ngValue]="4">4 sao</option>
+          <option [ngValue]="5">5 sao</option>
+        </select>
+      </div>
+      <div class="col-md-4 d-flex gap-2">
+        <button class="btn btn-primary flex-grow-1 rounded-pill fw-bold" (click)="applyFilter()">
+          <i class="feather icon-filter me-2"></i>Lọc dữ liệu
+        </button>
+        <button class="btn btn-light rounded-pill px-4" (click)="resetFilter()">
+          <i class="feather icon-refresh-cw"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sessions List -->
+  <div class="card premium-card border-0">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th style="width: 100px;">Điểm</th>
+              <th>Mã Phiên</th>
+              <th>Thời gian</th>
+              <th>Nền tảng</th>
+              <th>Số tiêu chí</th>
+              <th>Bình luận tổng</th>
+              <th class="text-center">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (isLoading()) {
+              <tr>
+                <td colspan="7" class="text-center py-5">
+                  <div class="spinner-border text-primary" role="status"></div>
+                  <p class="mt-2 text-muted">Đang tải lịch sử...</p>
+                </td>
+              </tr>
+            } @else if (sessions().length === 0) {
+              <tr>
+                <td colspan="7" class="text-center py-5 text-muted">
+                  <i class="feather icon-inbox f-40 mb-3 d-block opacity-25"></i>
+                  Không tìm thấy phiên đánh giá nào khớp với bộ lọc.
+                </td>
+              </tr>
+            } @else {
+              @for (session of sessions(); track session.id) {
+                <tr>
+                  <td>
+                    <div class="score-badge" [ngClass]="getScoreClass(session.totalScore)">
+                      <span>{{ (session.totalScore || 0) | number:'1.1-1' }}</span>
+                      <i class="feather icon-star small-star"></i>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="fw-bold text-primary">#{{ session.sessionCode.substring(0, 8) }}</div>
+                    <div class="text-muted x-small">ID: {{ session.id }}</div>
+                  </td>
+                  <td>
+                    <div class="fw-medium">{{ session.submittedAt | date:'dd/MM/yyyy' }}</div>
+                    <div class="text-muted small">{{ session.submittedAt | date:'HH:mm:ss' }}</div>
+                  </td>
+                  <td>
+                    <div class="platform-icon" [title]="session.devicePlatform">
+                      @if (session.devicePlatform === 'android') {
+                        <i class="fab fa-android text-success"></i>
+                      } @else if (session.devicePlatform === 'ios') {
+                        <i class="fab fa-apple"></i>
+                      } @else {
+                        <i class="feather icon-monitor"></i>
+                      }
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge bg-light-info text-info rounded-pill px-3">
+                      {{ session.itemCount }} tiêu chí
+                    </span>
+                  </td>
+                  <td>
+                    <div class="text-muted text-truncate" style="max-width: 250px;" [title]="session.generalComment">
+                      {{ session.generalComment || '---' }}
+                    </div>
+                  </td>
+                  <td class="text-center">
+                    <button class="detail-btn" (click)="viewDetail(session.id)">
+                      Xem chi tiết
+                    </button>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      @if (pagedResult() && pagedResult()!.totalPages > 1) {
+      <div class="pagination-container bg-light-soft">
+        <div class="text-muted small">
+          Hiển thị trang {{ pagedResult()!.page }} / {{ pagedResult()!.totalPages }} (Tổng {{ pagedResult()!.totalCount }} bản ghi)
+        </div>
+        <nav aria-label="Page navigation">
+          <ul class="pagination pagination-sm mb-0 gap-1">
+            <li class="page-item" [class.disabled]="filter.page === 1">
+              <a class="page-link rounded-circle" (click)="changePage(filter.page - 1)"><i class="feather icon-chevron-left"></i></a>
+            </li>
+            @for (p of getPages(); track p) {
+              <li class="page-item" [class.active]="filter.page === p">
+                <a class="page-link rounded-circle" (click)="changePage(p)">{{ p }}</a>
+              </li>
+            }
+            <li class="page-item" [class.disabled]="filter.page === pagedResult()!.totalPages">
+              <a class="page-link rounded-circle" (click)="changePage(filter.page + 1)"><i class="feather icon-chevron-right"></i></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Session Detail Modal -->
+@if (showDetailModal()) {
+<div class="modal fade show d-block detail-modal" style="background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow-lg overflow-hidden">
+      @if (isLoadingDetail()) {
+        <div class="modal-body text-center py-5">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="mt-3 text-muted">Đang lấy chi tiết đánh giá...</p>
+        </div>
+      } @else if (selectedDetail()) {
+        <div class="modal-header">
+          <div>
+            <h4 class="modal-title fw-bold">Chi tiết Đánh giá #{{ selectedDetail()!.sessionCode.substring(0, 8) }}</h4>
+            <p class="mb-0 opacity-75 small">Ngày gửi: {{ selectedDetail()!.submittedAt | date:'dd/MM/yyyy HH:mm:ss' }}</p>
+          </div>
+          <button type="button" class="btn-close" (click)="closeDetail()"></button>
+        </div>
+        <div class="modal-body bg-light-soft">
+          <!-- Device Info Grid -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-3">
+              <div class="info-group">
+                <label>Nền tảng</label>
+                <p>{{ selectedDetail()!.devicePlatform || 'N/A' }}</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="info-group">
+                <label>Phiên bản App</label>
+                <p>{{ selectedDetail()!.appVersion || '1.0.0' }}</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="info-group">
+                <label>Địa chỉ IP</label>
+                <p>{{ selectedDetail()!.ipAddress || '127.0.0.1' }}</p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="info-group text-center">
+                <label>Điểm Trung Bình</label>
+                <p class="fs-4 text-warning fw-bold">{{ (selectedDetail()!.totalScore || 0) | number:'1.1-1' }} <i class="feather icon-star"></i></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- General Comment -->
+          <div class="card border-0 rounded-4 shadow-sm mb-4">
+            <div class="card-body">
+              <h6 class="fw-bold mb-3"><i class="feather icon-message-circle me-2 text-primary"></i>Ý kiến khách hàng:</h6>
+              <p class="mb-0 fs-6 italic">"{{ selectedDetail()!.generalComment || 'Khách hàng không để lại bình luận tổng quát.' }}"</p>
+            </div>
+          </div>
+
+          <!-- Breakdown per Category -->
+          <h6 class="fw-bold mb-3 px-1 text-uppercase small text-muted letter-spacing-1">Chi tiết từng tiêu chí ({{ selectedDetail()!.items.length }})</h6>
+          <div class="row g-3">
+            @for (item of selectedDetail()!.items; track item.categoryId) {
+              <div class="col-md-6">
+                <div class="category-item d-flex align-items-center">
+                  <div class="flex-grow-1">
+                    <div class="fw-bold text-dark">{{ item.categoryName }}</div>
+                    @if (item.comment) {
+                      <div class="text-muted small italic">"{{ item.comment }}"</div>
+                    }
+                  </div>
+                  <div class="cat-score ms-3">
+                    {{ item.score }}<span class="fs-6 fw-normal text-muted ms-1">/5</span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+        <div class="modal-footer bg-white border-0 px-4 py-3">
+          <button type="button" class="btn btn-secondary rounded-pill px-5" (click)="closeDetail()">Đóng</button>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+}

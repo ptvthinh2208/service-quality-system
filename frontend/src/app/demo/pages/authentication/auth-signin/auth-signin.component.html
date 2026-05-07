@@ -1,0 +1,90 @@
+<div class="auth-wrapper">
+  <div class="auth-content">
+    <div class="auth-bg">
+      <span class="r"></span>
+      <span class="r s"></span>
+      <span class="r s"></span>
+      <span class="r"></span>
+    </div>
+    <div class="card">
+      <div class="card-body text-center">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="mb-4">
+            <h2 class="fw-bold text-primary">NUTRIHEALTH</h2>
+          </div>
+          <h3 class="mb-4">Đăng Nhập</h3>
+
+          <!-- Hiển thị lỗi chung từ server (nếu có) -->
+          @if (errorMessage()) {
+          <div class="alert alert-danger mb-3 text-start" role="alert">
+            <i class="feather icon-alert-circle me-2"></i> {{ errorMessage() }}
+          </div>
+          }
+
+          <!-- Username Field -->
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" id="username" formControlName="username" placeholder="Tên đăng nhập"
+              [class.is-invalid]="submitted() && f['username'].invalid" />
+            @if (submitted() && f['username'].invalid) {
+            <div class="invalid-feedback text-start">
+              @if (f['username'].errors?.['required']) {
+              <div>Tên đăng nhập không được để trống.</div>
+              }
+            </div>
+            }
+          </div>
+
+          <!-- Password Field -->
+          <div class="form-group mb-4">
+            <div class="position-relative">
+              <input [type]="showPassword() ? 'text' : 'password'" id="password" class="form-control"
+                formControlName="password" placeholder="Mật khẩu"
+                [class.is-invalid]="submitted() && f['password'].invalid" style="padding-right: 45px;" />
+              <span id="togglePassword" (click)="togglePasswordVisibility()">
+                <i [ngClass]="showPassword() ? 'feather icon-eye' : 'feather icon-eye-off'"></i>
+              </span>
+            </div>
+            @if (submitted() && f['password'].invalid) {
+            <div class="invalid-feedback d-block text-start">
+              @if (f['password'].errors?.['required']) {
+              <div>Password không được để trống.</div>
+              }
+              @if (f['password'].errors?.['minlength']) {
+              <div>Password phải có ít nhất 6 ký tự.</div>
+              }
+            </div>
+            }
+          </div>
+
+          <!-- Remember Me & Forgot Password -->
+          <div class="form-group text-start mb-4">
+            <div class="checkbox checkbox-fill d-inline">
+              <input type="checkbox" name="checkbox-fill-1" id="checkbox-fill-a1" [(ngModel)]="rememberMe"
+                [ngModelOptions]="{ standalone: true }" />
+              <label for="checkbox-fill-a1" class="cr"> Ghi nhớ đăng nhập</label>
+            </div>
+            <div class="float-end">
+              <a class="text-muted" style="cursor: pointer;" (click)="onForgotPassword()">Quên mật khẩu?</a>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-primary mb-4 w-100" [disabled]="loading()">
+            @if (loading()) {
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Vui lòng chờ ...
+            } @else {
+            Đăng Nhập
+            }
+          </button>
+
+          <!-- Sign Up Link -->
+          <p class="mb-0 text-muted">
+            Đăng ký mới nếu chưa có tài khoản!
+            <a [routerLink]="['/register']" class="fw-bold">Đăng ký</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,270 @@
+@use 'src/scss/variables' as var;
+@use 'src/scss/mixins' as mx;
+
+.profile-page-v2 {
+    font-family: var.$theme-font-family;
+
+    // Utilities
+    .hover-lift {
+        @include mx.hover-lift(-3px, 0 8px 15px rgba(0, 0, 0, 0.05));
+    }
+
+    .hover-effect {
+        transition: background-color var.$transition-base;
+        cursor: default;
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+    }
+
+    .transition-all {
+        transition: var.$transition-base;
+    }
+
+    .tracking-wide {
+        letter-spacing: 0.5px;
+    }
+
+    .tracking-wider {
+        letter-spacing: 1px;
+    }
+
+    // Header Card
+    .profile-header-card {
+        border-radius: var.$radius-xl;
+
+        .profile-cover {
+            height: 200px;
+            position: relative;
+            // Beautiful gradient background as default cover
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+
+            .cover-overlay {
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.2) 100%);
+            }
+
+            .btn-update-data {
+                backdrop-filter: blur(5px);
+                background: rgba(255, 255, 255, 0.85) !important;
+                border: 1px solid rgba(255, 255, 255, 0.4);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                font-weight: 500;
+
+                &:hover {
+                    background: #fff !important;
+                    transform: translateY(-2px);
+                }
+            }
+        }
+
+        .profile-main-info {
+            padding: 0 24px;
+            margin-top: -65px; // Pull avatar up
+
+            .avatar-wrapper {
+                position: relative;
+                width: 150px;
+                height: 150px;
+                z-index: 2;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+                }
+
+                .status-indicator {
+                    position: absolute;
+                    bottom: 12px;
+                    right: 12px;
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 50%;
+                    border: 4px solid #fff;
+
+                    &.active {
+                        background-color: #1cc88a; // Success
+                        box-shadow: 0 0 0 1px rgba(28, 200, 138, 0.3);
+                    }
+                }
+            }
+
+            @media (max-width: 768px) {
+                margin-top: -55px;
+
+                .avatar-wrapper {
+                    width: 120px;
+                    height: 120px;
+                }
+            }
+        }
+
+        .stats-row {
+            .stat-col {
+                padding: 24px 10px;
+            }
+
+            .stat-icon {
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 20px;
+            }
+        }
+    }
+
+    // Credit Card Style (Membership)
+    .membership-card-wrap {
+        perspective: 1000px;
+        max-width: 500px;
+        margin: 0 auto;
+
+        .credit-card-ui {
+            min-height: 280px;
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+            cursor: pointer;
+
+            &:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+
+                .card-footer-action {
+                    background: rgba(255, 255, 255, 0.1);
+                    
+                    span, .jumping-arrow {
+                        opacity: 1;
+                    }
+
+                    .jumping-arrow {
+                        transform: translateY(3px);
+                    }
+                }
+            }
+
+            .card-footer-action {
+                background: rgba(0, 0, 0, 0.1);
+                border-top: 1px solid rgba(255, 255, 255, 0.05);
+                transition: all 0.3s ease;
+                padding: 10px 0 !important; // Compact padding
+                
+                span {
+                    font-size: 11px;
+                    opacity: 0.6;
+                    letter-spacing: 0.5px;
+                    transition: all 0.3s ease;
+                }
+
+                .jumping-arrow {
+                    font-size: 14px;
+                    opacity: 0.6;
+                    transition: all 0.3s ease;
+                    animation: bounce-down 2s infinite;
+                }
+            }
+
+            @keyframes bounce-down {
+                0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+                40% {transform: translateY(-5px);}
+                60% {transform: translateY(-3px);}
+            }
+
+            .card-inner {
+                position: relative;
+                z-index: 5;
+                height: 100%;
+            }
+
+            .card-points-display {
+                font-family: 'Outfit', sans-serif;
+                letter-spacing: 1px;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            }
+
+            .mono-font {
+                font-family: 'JetBrains Mono', monospace;
+            }
+
+            // Base Noise for realism
+            .card-noise-overlay {
+                position: absolute;
+                inset: 0;
+                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+                opacity: 0.1;
+                mix-blend-mode: overlay;
+                pointer-events: none;
+                z-index: 1;
+            }
+
+            // Tiers specific gradients
+            &[data-tier="member"] { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
+            &[data-tier="silver"] { background: linear-gradient(135deg, #94a3b8 0%, #cbd5e1 50%, #64748b 100%); .text-white { color: #0f172a !important; } }
+            &[data-tier="gold"] { background: linear-gradient(135deg, #ca8a04 0%, #facc15 50%, #854d0e 100%); .text-white { color: #422006 !important; } }
+            &[data-tier="platinum"] { background: linear-gradient(135deg, #0f172a 0%, #334155 100%); }
+        }
+    }
+
+    .contact-info-widget {
+        border-radius: 24px;
+        background: #fff;
+
+        .info-item {
+            border: 1px solid transparent;
+            
+            &:hover {
+                border-color: rgba(0,0,0,0.05);
+                background: #fff !important;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+            }
+        }
+    }
+
+    .bg-light-soft {
+        background-color: #f8fafc;
+    }
+
+    // ==================== MOBILE RESPONSIVE FIXES ====================
+    @media (max-width: 991px) {
+        .membership-card-wrap {
+            max-width: 100%;
+            margin-bottom: 24px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .profile-header-card {
+            .stats-row {
+                .stat-col {
+                    padding: 15px 5px;
+                    h6 { font-size: 11px; }
+                }
+            }
+        }
+
+        .credit-card-ui {
+            min-height: 240px !important;
+            padding: 20px !important;
+
+            .card-inner {
+                padding: 0 !important;
+            }
+
+            .fs-4 { font-size: 1.25rem !important; }
+            .card-points-display { font-size: 1.8rem !important; }
+        }
+    }
+}
