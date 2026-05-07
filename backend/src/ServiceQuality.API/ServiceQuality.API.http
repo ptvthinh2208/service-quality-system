@@ -1,0 +1,6 @@
+@ServiceQuality.API_HostAddress = http://localhost:5170
+
+GET {{ServiceQuality.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
