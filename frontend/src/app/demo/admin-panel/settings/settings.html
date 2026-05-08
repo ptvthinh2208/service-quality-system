@@ -1,0 +1,224 @@
+<div class="settings-container">
+  <div class="page-header d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <span class="badge-label">Hệ thống Đánh giá</span>
+      <h2 class="fw-bold mt-2 mb-0 text-dark">Cấu hình Ứng dụng (Tablet)</h2>
+      <p class="text-muted mb-0 mt-1">Tùy chỉnh giao diện và thông tin hiển thị trên ứng dụng đánh giá tại quầy.</p>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-light rounded-pill px-4 fw-bold shadow-sm" (click)="loadConfig()">
+        <i class="feather icon-refresh-cw me-2"></i>Tải Lại
+      </button>
+      <button class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" (click)="onSubmit()"
+        [disabled]="configForm.invalid || isSubmitting()">
+        @if (isSubmitting()) {
+        <span class="spinner-border spinner-border-sm me-2"></span> Đang lưu...
+        } @else {
+        <i class="feather icon-save me-2"></i> Lưu Cấu Hình
+        }
+      </button>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- ===== CỘT FORM BÊN TRÁI ===== -->
+    <div class="col-xl-7 col-lg-12">
+      @if (isLoading()) {
+      <div class="card border-0 shadow-sm rounded-4 text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-3 text-muted fw-medium">Đang tải cấu hình...</p>
+      </div>
+      } @else {
+      <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+
+        <!-- Section 1: Màn hình Chào mừng -->
+        <div class="card premium-card border-0 shadow-sm mb-4 rounded-4">
+          <div class="card-header section-header bg-white border-bottom-0 pt-4 pb-0 px-4">
+            <h5 class="fw-bold text-dark mb-0">🏠 Màn hình Chào mừng</h5>
+          </div>
+          <div class="card-body p-4">
+            <div class="row g-4">
+              <div class="col-md-12">
+                <label class="form-label fw-bold text-muted small text-uppercase letter-spacing-1">Tiêu đề chính <span
+                    class="text-danger">*</span></label>
+                <input type="text" class="form-control form-control-lg custom-input" formControlName="welcomeTitle"
+                  placeholder="VD: Đánh Giá Chất Lượng Dịch Vụ">
+              </div>
+              <div class="col-md-12">
+                <label class="form-label fw-bold text-muted small text-uppercase letter-spacing-1">Tiêu đề phụ
+                  (Subtitle)</label>
+                <input type="text" class="form-control custom-input" formControlName="welcomeSubtitle"
+                  placeholder="VD: Xin chào! Hãy chia sẻ trải nghiệm của bạn">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Hiển thị Chung -->
+        <div class="card premium-card border-0 shadow-sm mb-4 rounded-4">
+          <div class="card-header section-header bg-white border-bottom-0 pt-4 pb-0 px-4">
+            <h5 class="fw-bold text-dark mb-0">📱 Hiển thị Chung</h5>
+          </div>
+          <div class="card-body p-4">
+            <div class="row g-4">
+              <div class="col-md-12">
+                <label class="form-label fw-bold text-muted small text-uppercase letter-spacing-1">Hotline hỗ trợ <span
+                    class="text-danger">*</span></label>
+                <div class="input-group custom-input-group">
+                  <span class="input-group-text bg-white border-end-0"><i
+                      class="feather icon-phone text-primary"></i></span>
+                  <input type="text" class="form-control border-start-0 ps-0" formControlName="hotline"
+                    placeholder="VD: 1900 1234">
+                </div>
+                <div class="form-text mt-2">Đường dây nóng này sẽ hiển thị ở Footer của mọi trang trên ứng dụng Tablet.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Màn hình Kết thúc -->
+        <div class="card premium-card border-0 shadow-sm mb-4 rounded-4">
+          <div class="card-header section-header bg-white border-bottom-0 pt-4 pb-0 px-4">
+            <h5 class="fw-bold text-dark mb-0">✅ Màn hình Kết thúc</h5>
+          </div>
+          <div class="card-body p-4">
+            <div class="row g-4">
+              <div class="col-md-8">
+                <label class="form-label fw-bold text-muted small text-uppercase letter-spacing-1">Lời cảm ơn <span
+                    class="text-danger">*</span></label>
+                <input type="text" class="form-control custom-input" formControlName="thankYouMessage"
+                  placeholder="VD: Cảm ơn bạn đã đánh giá!">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-bold text-muted small text-uppercase letter-spacing-1">Tự động Reset <span
+                    class="text-danger">*</span></label>
+                <div class="input-group custom-input-group">
+                  <input type="number" class="form-control text-center" formControlName="resetTimeoutSeconds" min="5">
+                  <span class="input-group-text bg-light text-muted fw-bold">giây</span>
+                </div>
+                <div class="form-text mt-2">Thời gian chờ trước khi quay về màn hình chính.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <input type="hidden" formControlName="primaryColor">
+      </form>
+      }
+    </div>
+
+    <!-- ===== CỘT LIVE PREVIEW BÊN PHẢI ===== -->
+    <div class="col-xl-5 col-lg-12">
+      <div class="card border-0 shadow-sm rounded-4 overflow-hidden position-sticky" style="top: 2rem;">
+        <div class="card-header bg-white border-bottom px-4 py-3">
+          <h6 class="fw-bold mb-3 text-dark">📺 Xem trước trên Tablet</h6>
+          <!-- Tab chuyển màn hình -->
+          <div class="preview-tabs d-flex gap-2">
+            <button class="preview-tab-btn" [class.active]="previewTab === 'welcome'"
+              (click)="previewTab = 'welcome'">Chào mừng</button>
+            <button class="preview-tab-btn" [class.active]="previewTab === 'evaluation'"
+              (click)="previewTab = 'evaluation'">Đánh giá</button>
+            <button class="preview-tab-btn" [class.active]="previewTab === 'thankyou'"
+              (click)="previewTab = 'thankyou'">Cảm ơn</button>
+          </div>
+        </div>
+        <div class="card-body p-4 bg-light-soft">
+          <!-- Tablet Frame -->
+          <div class="tablet-frame mx-auto">
+            <div class="tablet-screen">
+
+              <!-- ========== TAB 1: MÀN HÌNH CHÀO MỪNG ========== -->
+              @if (previewTab === 'welcome') {
+              <div class="app-welcome-bg">
+                <div class="deco-circle deco-1"></div>
+                <div class="deco-circle deco-2"></div>
+                <div class="deco-circle deco-3"></div>
+                <div class="app-content">
+                  <div class="app-logo-box">
+                    <img src="assets/images/logo.png" alt="Nutrihealth Logo" class="app-logo-img"
+                      onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <span style="display:none; font-size: 2rem;">💚</span>
+                  </div>
+                  <div class="app-title">{{ configForm.get('welcomeTitle')?.value || 'Đánh Giá Chất Lượng Dịch Vụ' }}
+                  </div>
+                  <div class="app-subtitle">{{ configForm.get('welcomeSubtitle')?.value || 'Ý kiến của bạn giúp chúng
+                    tôi phục vụ tốt hơn' }}</div>
+                  <div class="app-btn">BẮT ĐẦU ĐÁNH GIÁ →</div>
+                </div>
+                <div class="app-hotline">📞 Hotline hỗ trợ: {{ configForm.get('hotline')?.value || '1900 1234' }}</div>
+              </div>
+              }
+
+              <!-- ========== TAB 2: MÀN HÌNH ĐÁNH GIÁ ========== -->
+              @if (previewTab === 'evaluation') {
+              <div class="app-eval-bg">
+                <!-- Header -->
+                <div class="eval-header">
+                  <img src="assets/images/logo.png" alt="Logo" class="eval-logo" onerror="this.style.display='none';">
+                  <div class="eval-progress">
+                    <div class="eval-progress-bar" style="width: 33%;"></div>
+                  </div>
+                  <span class="eval-step">Bước 1/3</span>
+                </div>
+                <!-- Content -->
+                <div class="eval-content">
+                  <div class="d-flex gap-3" style="height: 100%;">
+                    <!-- Left: Criteria -->
+                    <div class="eval-left">
+                      <div class="eval-icon-circle">⭐</div>
+                      <div class="eval-criteria-name">Thái độ phục vụ</div>
+                      <div class="eval-criteria-desc">Nhân viên thân thiện, lịch sự</div>
+                      <div class="eval-stars">
+                        <span class="star active">★</span>
+                        <span class="star active">★</span>
+                        <span class="star active">★</span>
+                        <span class="star active">★</span>
+                        <span class="star">★</span>
+                      </div>
+                      <div class="eval-rating-label">😊 Hài lòng</div>
+                    </div>
+                    <!-- Right: Comment -->
+                    <div class="eval-right">
+                      <div class="eval-comment-title">✏️ Phản hồi của bạn</div>
+                      <div class="eval-comment-box">Nhập phản hồi tại đây...</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Footer -->
+                <div class="eval-footer">
+                  <span class="eval-footer-hotline">📞 {{ configForm.get('hotline')?.value || '1900 1234' }}</span>
+                  <span class="eval-footer-btn">TIẾP THEO →</span>
+                </div>
+              </div>
+              }
+
+              <!-- ========== TAB 3: MÀN HÌNH CẢM ƠN ========== -->
+              @if (previewTab === 'thankyou') {
+              <div class="app-welcome-bg">
+                <div class="deco-circle deco-1"></div>
+                <div class="deco-circle deco-2"></div>
+                <div class="app-content">
+                  <div class="thankyou-icon">✅</div>
+                  <div class="app-title">{{ configForm.get('thankYouMessage')?.value || 'Cảm ơn bạn đã đánh giá!' }}
+                  </div>
+                  <div class="app-subtitle">Ý kiến của bạn giúp chúng tôi cải thiện dịch vụ tốt hơn.</div>
+                  <div class="thankyou-countdown">
+                    Tự động quay lại sau {{ configForm.get('resetTimeoutSeconds')?.value || 5 }} giây...
+                  </div>
+                </div>
+              </div>
+              }
+
+            </div>
+          </div>
+
+          <div class="mt-3 text-center">
+            <p class="text-muted small mb-0">Thay đổi sẽ cập nhật ngay trên App khi nhấn <strong>Lưu Cấu Hình</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

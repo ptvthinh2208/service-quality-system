@@ -67,6 +67,10 @@ export const routes: Routes = [
           {
             path: 'sessions',
             loadComponent: () => import('./demo/admin-panel/sessions/sessions.component').then(c => c.SessionsComponent)
+          },
+          {
+            path: 'settings',
+            loadComponent: () => import('./demo/admin-panel/settings/settings').then(c => c.Settings)
           }
         ]
       },

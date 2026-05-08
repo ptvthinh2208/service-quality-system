@@ -93,7 +93,8 @@ public class EvaluationService : IEvaluationService
                 GeneralComment = s.GeneralComment,
                 TotalScore = s.TotalScore,
                 SubmittedAt = s.SubmittedAt,
-                ItemCount = s.Items.Count
+                ItemCount = s.Items.Count,
+                CommentCount = s.Items.Count(i => i.Comment != null && i.Comment != "")
             })
             .ToListAsync();
 

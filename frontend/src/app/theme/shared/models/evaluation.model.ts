@@ -13,6 +13,7 @@ export interface EvaluationSession {
     totalScore?: number;
     submittedAt: string;
     itemCount: number;
+    commentCount: number;
 }
 
 export interface EvaluationSessionDetail extends EvaluationSession {

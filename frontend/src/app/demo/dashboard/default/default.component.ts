@@ -12,7 +12,8 @@ import {
   ApexTooltip,
   ApexDataLabels,
   ApexPlotOptions,
-  ApexYAxis
+  ApexYAxis,
+  ApexMarkers
 } from 'ng-apexcharts';
 
 export type ChartOptions = {
@@ -24,6 +25,7 @@ export type ChartOptions = {
   tooltip: ApexTooltip;
   dataLabels: ApexDataLabels;
   colors: string[];
+  markers: ApexMarkers;
 };
 
 export type BarChartOptions = {
@@ -54,6 +56,7 @@ export class DefaultComponent implements OnInit {
   isLoading = true;
 
   stats: DashboardStatsDto | null = null;
+  hasTrendData = false;
 
   // Chart options
   trendChartOptions!: Partial<ChartOptions>;
@@ -77,14 +80,30 @@ export class DefaultComponent implements OnInit {
     this.trendChartOptions = {
       series: [],
       chart: { type: 'line', height: 350, toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
-      colors: ['#6366f1', '#f59e0b'],
-      dataLabels: { enabled: false },
+      colors: ['#1e88e5', '#ffb300'],
+      dataLabels: { 
+        enabled: true,
+        formatter: (val: number, opts: any) => {
+          // Series 0 = Số lượt (số nguyên), Series 1 = Điểm TB (2 số thập phân)
+          if (opts.seriesIndex === 1) return val.toFixed(2);
+          return val.toString();
+        },
+        style: { fontSize: '12px', fontWeight: 700 },
+        background: { enabled: true, borderRadius: 4, padding: 4, borderWidth: 0 }
+      },
       stroke: { curve: 'smooth', width: [3, 2], dashArray: [0, 5] },
+      markers: {
+        size: [8, 6],
+        strokeWidth: 2,
+        strokeColors: '#fff',
+        hover: { size: 10 }
+      },
       xaxis: { 
         type: 'datetime', 
         categories: [],
         axisBorder: { show: false },
-        axisTicks: { show: false }
+        axisTicks: { show: false },
+        labels: { format: 'dd/MM' }
       },
       yaxis: [
         { title: { text: 'Số lượt' }, min: 0 },
@@ -104,11 +123,15 @@ export class DefaultComponent implements OnInit {
           distributed: true
         } 
       },
-      dataLabels: { enabled: true, formatter: (val) => val.toString(), style: { colors: ['#fff'] } },
+      dataLabels: { 
+        enabled: true, 
+        formatter: (val: number) => val.toFixed(2), 
+        style: { colors: ['#fff'], fontSize: '13px', fontWeight: 700 } 
+      },
       stroke: { show: false },
       xaxis: { categories: [] },
-      yaxis: { labels: { style: { fontWeight: 600 } } },
-      colors: ['#6366f1', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899', '#f43f5e'] // Multi-color bar palette
+      yaxis: { labels: { style: { fontWeight: 600 } }, max: 5, min: 0 },
+      colors: ['#1e88e5', '#26a69a', '#f4511e', '#7e57c2', '#ffb300', '#ec407a', '#5c6bc0', '#66bb6a']
     };
   }
 
@@ -123,7 +146,7 @@ export class DefaultComponent implements OnInit {
         // Update Category Chart
         if (res.categoryStats && res.categoryStats.length > 0) {
           const catNames = res.categoryStats.map(c => c.categoryName);
-          const catScores = res.categoryStats.map(c => c.avgScore);
+          const catScores = res.categoryStats.map(c => Math.round(c.avgScore * 100) / 100);
 
           this.categoryChartOptions = {
             ...this.categoryChartOptions,
@@ -151,7 +174,7 @@ export class DefaultComponent implements OnInit {
         if (res && res.length > 0) {
           const dates = res.map(d => d.date);
           const counts = res.map(d => d.count);
-          const scores = res.map(d => d.avgScore);
+          const scores = res.map(d => Math.round(d.avgScore * 100) / 100);
 
           this.trendChartOptions = {
             ...this.trendChartOptions,
@@ -165,10 +188,14 @@ export class DefaultComponent implements OnInit {
               categories: dates
             }
           };
-          this.cdr.detectChanges();
+          this.hasTrendData = true;
         }
+        this.cdr.detectChanges();
       },
-      error: (err) => console.error('Lỗi tải biểu đồ xu hướng:', err)
+      error: (err) => {
+        console.error('Lỗi tải biểu đồ xu hướng:', err);
+        this.cdr.detectChanges();
+      }
     });
   }
 }

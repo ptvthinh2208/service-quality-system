@@ -52,14 +52,30 @@ export const NavigationItems: NavigationItem[] = [
       },
       {
         id: 'sessions',
-        title: 'Phiên đánh giá',
+        title: 'Lịch sử đánh giá',
         type: 'item',
         url: '/admin/sessions', // Placeholder route for future
         icon: 'feather icon-check-square',
+      }
+    ]
+  },
+  {
+    id: 'settings',
+    title: 'Cài đặt',
+    type: 'group',
+    icon: 'icon-settings',
+    roles: ['Admin'],
+    children: [
+      {
+        id: 'app-config',
+        title: 'Cấu hình Ứng dụng',
+        type: 'item',
+        url: '/admin/settings',
+        icon: 'feather icon-settings',
         classes: 'nav-item',
         roles: ['Admin']
       }
     ]
-  },
+  }
 
 ];

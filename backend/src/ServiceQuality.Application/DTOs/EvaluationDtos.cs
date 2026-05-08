@@ -37,6 +37,7 @@ public class EvaluationSessionListDto
     public decimal? TotalScore { get; set; }
     public DateTime SubmittedAt { get; set; }
     public int ItemCount { get; set; }
+    public int CommentCount { get; set; }
 }
 
 /// <summary>DTO chi tiết một đánh giá trên Admin</summary>

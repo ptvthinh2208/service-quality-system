@@ -177,7 +177,8 @@ public class AppConfigService : IAppConfigService
             ThankYouMessage = configs.GetValueOrDefault("thankyou_message", "Cảm ơn bạn đã đánh giá!"),
             ResetTimeoutSeconds = int.TryParse(configs.GetValueOrDefault("reset_timeout_seconds", "10"), out var t) ? t : 10,
             LogoUrl = configs.GetValueOrDefault("logo_url", null!),
-            PrimaryColor = configs.GetValueOrDefault("primary_color", "#1976D2")
+            PrimaryColor = configs.GetValueOrDefault("primary_color", "#1976D2"),
+            Hotline = configs.GetValueOrDefault("hotline", "1900 1234")
         };
     }
 

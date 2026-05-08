@@ -17,14 +17,14 @@
   <!-- Filter Bar -->
   <div class="filter-card card border-0 shadow-sm mb-4">
     <div class="row g-3 align-items-end">
-      <div class="col-md-3">
+      <div class="col-md-2">
         <label class="form-label small fw-bold text-uppercase text-muted">Từ ngày</label>
         <div class="input-group">
           <input class="form-control" placeholder="dd/mm/yyyy" name="dpFrom" [(ngModel)]="fromDateModel" ngbDatepicker #dFrom="ngbDatepicker" container="body">
           <button class="btn btn-outline-secondary feather icon-calendar" (click)="dFrom.toggle()" type="button"></button>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-2">
         <label class="form-label small fw-bold text-uppercase text-muted">Đến ngày</label>
         <div class="input-group">
           <input class="form-control" placeholder="dd/mm/yyyy" name="dpTo" [(ngModel)]="toDateModel" ngbDatepicker #dTo="ngbDatepicker" container="body">
@@ -32,14 +32,25 @@
         </div>
       </div>
       <div class="col-md-2">
-        <label class="form-label small fw-bold text-uppercase text-muted">Điểm tối thiểu</label>
+        <label class="form-label small fw-bold text-uppercase text-muted">Điểm từ</label>
         <select class="form-select" [(ngModel)]="filter.minScore">
           <option [ngValue]="undefined">Tất cả</option>
-          <option [ngValue]="1">1 sao</option>
-          <option [ngValue]="2">2 sao</option>
-          <option [ngValue]="3">3 sao</option>
-          <option [ngValue]="4">4 sao</option>
-          <option [ngValue]="5">5 sao</option>
+          <option [ngValue]="1">1 ⭐</option>
+          <option [ngValue]="2">2 ⭐</option>
+          <option [ngValue]="3">3 ⭐</option>
+          <option [ngValue]="4">4 ⭐</option>
+          <option [ngValue]="5">5 ⭐</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label small fw-bold text-uppercase text-muted">Điểm đến</label>
+        <select class="form-select" [(ngModel)]="filter.maxScore">
+          <option [ngValue]="undefined">Tất cả</option>
+          <option [ngValue]="1">1 ⭐</option>
+          <option [ngValue]="2">2 ⭐</option>
+          <option [ngValue]="3">3 ⭐</option>
+          <option [ngValue]="4">4 ⭐</option>
+          <option [ngValue]="5">5 ⭐</option>
         </select>
       </div>
       <div class="col-md-4 d-flex gap-2">
@@ -60,13 +71,13 @@
         <table class="table table-hover align-middle">
           <thead>
             <tr>
-              <th style="width: 100px;">Điểm</th>
-              <th>Mã Phiên</th>
-              <th>Thời gian</th>
-              <th>Nền tảng</th>
-              <th>Số tiêu chí</th>
-              <th>Bình luận tổng</th>
-              <th class="text-center">Thao tác</th>
+              <th style="width: 80px;" class="text-center">Điểm</th>
+              <th style="width: 160px;">Mã Phiên</th>
+              <th style="width: 140px;">Thời gian</th>
+              <th style="width: 80px;" class="text-center">Nền tảng</th>
+              <th style="width: 100px;" class="text-center">Tiêu chí</th>
+              <th style="width: 100px;" class="text-center">Bình luận</th>
+              <th class="text-center" style="width: 120px;">Thao tác</th>
             </tr>
           </thead>
           <tbody>
@@ -98,10 +109,10 @@
                     <div class="text-muted x-small">ID: {{ session.id }}</div>
                   </td>
                   <td>
-                    <div class="fw-medium">{{ session.submittedAt | date:'dd/MM/yyyy' }}</div>
-                    <div class="text-muted small">{{ session.submittedAt | date:'HH:mm:ss' }}</div>
+                    <div class="fw-medium">{{ formatUtcDate(session.submittedAt) | date:'dd/MM/yyyy' }}</div>
+                    <div class="text-muted small">{{ formatUtcDate(session.submittedAt) | date:'HH:mm:ss' }}</div>
                   </td>
-                  <td>
+                  <td class="text-center">
                     <div class="platform-icon" [title]="session.devicePlatform">
                       @if (session.devicePlatform === 'android') {
                         <i class="fab fa-android text-success"></i>
@@ -112,15 +123,15 @@
                       }
                     </div>
                   </td>
-                  <td>
+                  <td class="text-center">
                     <span class="badge bg-light-info text-info rounded-pill px-3">
                       {{ session.itemCount }} tiêu chí
                     </span>
                   </td>
-                  <td>
-                    <div class="text-muted text-truncate" style="max-width: 250px;" [title]="session.generalComment">
-                      {{ session.generalComment || '---' }}
-                    </div>
+                  <td class="text-center">
+                    <span class="badge rounded-pill px-3" [ngClass]="session.commentCount > 0 ? 'bg-light-primary text-primary' : 'bg-light text-muted'">
+                      {{ session.commentCount }}/{{ session.itemCount }}
+                    </span>
                   </td>
                   <td class="text-center">
                     <button class="detail-btn" (click)="viewDetail(session.id)">
@@ -175,7 +186,7 @@
         <div class="modal-header">
           <div>
             <h4 class="modal-title fw-bold">Chi tiết Đánh giá #{{ selectedDetail()!.sessionCode.substring(0, 8) }}</h4>
-            <p class="mb-0 opacity-75 small">Ngày gửi: {{ selectedDetail()!.submittedAt | date:'dd/MM/yyyy HH:mm:ss' }}</p>
+            <p class="mb-0 opacity-75 small">Ngày gửi: {{ formatUtcDate(selectedDetail()?.submittedAt) | date:'dd/MM/yyyy HH:mm:ss' }}</p>
           </div>
           <button type="button" class="btn-close" (click)="closeDetail()"></button>
         </div>

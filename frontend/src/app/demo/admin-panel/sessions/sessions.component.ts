@@ -53,6 +53,14 @@ export class SessionsComponent implements OnInit {
     this.loadSessions();
   }
 
+  // Hàm ép kiểu chuỗi thời gian thành UTC để trình duyệt tự động hiển thị theo giờ Việt Nam
+  formatUtcDate(dateString: string | undefined): Date | null {
+    if (!dateString) return null;
+    // Đảm bảo chuỗi ngày tháng được hiểu là UTC bằng cách thêm 'Z'
+    const utcString = dateString.endsWith('Z') ? dateString : dateString + 'Z';
+    return new Date(utcString);
+  }
+
   loadSessions(): void {
     this.isLoading.set(true);
     

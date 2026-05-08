@@ -1,5 +1,5 @@
 :host {
-  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  --primary-gradient: linear-gradient(135deg, #1e88e5 0%, #42a5f5 100%);
   --glass-bg: rgba(255, 255, 255, 0.8);
   --glass-border: rgba(255, 255, 255, 0.5);
 }
@@ -14,14 +14,16 @@
   margin-bottom: 2rem;
   
   .badge-label {
-    background: rgba(168, 85, 247, 0.1);
-    color: #a855f7;
+    background: rgba(30, 136, 229, 0.1);
+    color: #1e88e5;
     padding: 0.5rem 1rem;
     border-radius: 10px;
     font-weight: 600;
     font-size: 0.8rem;
   }
 }
+
+.bg-light-primary { background: rgba(30, 136, 229, 0.1) !important; }
 
 .filter-card {
   border: 1px solid var(--glass-border) !important;
@@ -92,8 +94,8 @@
 }
 
 .detail-btn {
-  background: rgba(99, 102, 241, 0.1);
-  color: #6366f1;
+  background: rgba(30, 136, 229, 0.1);
+  color: #1e88e5;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 10px;
@@ -101,7 +103,7 @@
   transition: all 0.2s ease;
 
   &:hover {
-    background: #6366f1;
+    background: #1e88e5;
     color: white;
     transform: translateY(-2px);
   }
@@ -133,11 +135,12 @@
     padding: 1rem;
     border-radius: 12px;
     background: white;
-    border: 1px solid #f1f5f9;
+    border: 1px solid #cbd5e1; /* Làm đậm viền từ #f1f5f9 thành #cbd5e1 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03); /* Thêm đổ bóng nhẹ mặc định */
     margin-bottom: 1rem;
     transition: all 0.2s ease;
 
-    &:hover { border-color: #6366f1; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    &:hover { border-color: #1e88e5; box-shadow: 0 4px 12px rgba(30, 136, 229, 0.15); }
 
     .cat-score {
       font-size: 1.25rem;
@@ -157,7 +160,7 @@
 .form-control, .form-select {
   border-radius: 10px;
   border: 1px solid #e2e8f0;
-  &:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); }
+  &:focus { border-color: #1e88e5; box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1); }
 }
 
 // NgbDatepicker Overrides
@@ -200,7 +203,7 @@
       position: relative;
       
       &:hover {
-        background: #6366f1 !important;
+        background: #1e88e5 !important;
         color: white !important;
       }
 
@@ -253,7 +256,7 @@
       text-align: center;
 
       &:focus {
-        border-color: #6366f1 !important;
+        border-color: #1e88e5 !important;
         outline: none;
       }
     }
@@ -292,9 +295,9 @@
   }
 
   .bg-primary {
-    background-color: #6366f1 !important;
+    background-color: #1e88e5 !important;
     color: white !important;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
   }
 
   .text-white {
@@ -302,10 +305,10 @@
   }
 
   .ngb-dp-today {
-    background-color: rgba(99, 102, 241, 0.05) !important;
-    color: #6366f1 !important;
+    background-color: rgba(30, 136, 229, 0.05) !important;
+    color: #1e88e5 !important;
     font-weight: 700 !important;
-    border: 1px solid rgba(99, 102, 241, 0.2) !important;
+    border: 1px solid rgba(30, 136, 229, 0.2) !important;
   }
 }
 

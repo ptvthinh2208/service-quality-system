@@ -9,7 +9,8 @@
     <div class="card">
       <div class="card-body text-center">
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-          <div class="mb-4">
+          <div class="mb-4 text-center">
+            <img src="assets/images/logo.png" alt="Nutrihealth Logo" class="img-fluid mb-3" style="max-height: 80px;">
             <h2 class="fw-bold text-primary">NUTRIHEALTH</h2>
           </div>
           <h3 class="mb-4">Đăng Nhập</h3>
@@ -58,14 +59,14 @@
 
           <!-- Remember Me & Forgot Password -->
           <div class="form-group text-start mb-4">
-            <div class="checkbox checkbox-fill d-inline">
+            <!-- <div class="checkbox checkbox-fill d-inline">
               <input type="checkbox" name="checkbox-fill-1" id="checkbox-fill-a1" [(ngModel)]="rememberMe"
                 [ngModelOptions]="{ standalone: true }" />
               <label for="checkbox-fill-a1" class="cr"> Ghi nhớ đăng nhập</label>
-            </div>
-            <div class="float-end">
+            </div> -->
+            <!-- <div class="float-end">
               <a class="text-muted" style="cursor: pointer;" (click)="onForgotPassword()">Quên mật khẩu?</a>
-            </div>
+            </div> -->
           </div>
 
           <!-- Submit Button -->
@@ -79,10 +80,10 @@
           </button>
 
           <!-- Sign Up Link -->
-          <p class="mb-0 text-muted">
+          <!-- <p class="mb-0 text-muted">
             Đăng ký mới nếu chưa có tài khoản!
             <a [routerLink]="['/register']" class="fw-bold">Đăng ký</a>
-          </p>
+          </p> -->
         </form>
       </div>
     </div>

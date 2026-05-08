@@ -67,4 +67,5 @@ public class AppConfigDto
     public int ResetTimeoutSeconds { get; set; } = 10;
     public string? LogoUrl { get; set; }
     public string PrimaryColor { get; set; } = "#1976D2";
+    public string Hotline { get; set; } = "1900 1234";
 }

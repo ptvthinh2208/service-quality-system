@@ -1,0 +1,28 @@
+.b-brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo-text {
+  font-family: 'Inter', 'Roboto', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-left: 2px;
+  background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* Ẩn chữ khi sidebar thu nhỏ để không đè lên nút collapse */
+:host-context(.on) {
+  .logo-text {
+    display: none;
+  }
+}

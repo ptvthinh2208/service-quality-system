@@ -160,3 +160,32 @@ public class AuthController : ControllerBase
         return Ok(new { success = true, data = result });
     }
 }
+
+/// <summary>
+/// Admin API — Quản lý cấu hình chung (App Config)
+/// </summary>
+[Authorize]
+[ApiController]
+[Route("api/admin/app-config")]
+public class AdminAppConfigController : ControllerBase
+{
+    private readonly IAppConfigService _service;
+    public AdminAppConfigController(IAppConfigService service) => _service = service;
+
+    [HttpGet]
+    public async Task<IActionResult> GetConfig()
+    {
+        var result = await _service.GetAppConfigAsync();
+        return Ok(new { success = true, data = result });
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateConfig([FromBody] Dictionary<string, string> configs)
+    {
+        foreach (var config in configs)
+        {
+            await _service.UpdateConfigAsync(config.Key, config.Value);
+        }
+        return Ok(new { success = true, message = "Cập nhật cấu hình thành công" });
+    }
+}

@@ -57,8 +57,8 @@ export class ProfileComponent implements OnInit {
   parseDate(dateString: any): Date {
     if (!dateString) return new Date();
     if (typeof dateString === 'string') {
-      const sanitized = dateString.replace('Z', '').replace(/\+00:?00$/, '');
-      return new Date(sanitized);
+      const utcString = dateString.endsWith('Z') ? dateString : dateString + 'Z';
+      return new Date(utcString);
     }
     return new Date(dateString);
   }

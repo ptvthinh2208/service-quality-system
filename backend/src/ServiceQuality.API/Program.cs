@@ -133,7 +133,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseSerilogRequestLogging();
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection(); // Tạm thời tắt để phục vụ mobile app kết nối HTTP
 
 // CORS: public endpoints dùng MobilePolicy, admin dùng AppCorsPolicy
 app.UseCors("AppCorsPolicy");
