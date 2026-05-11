@@ -4,7 +4,7 @@ import '../models/models.dart';
 import '../config/app_config.dart';
 
 class ApiService {
-  static const String baseUrl = AppConfig.baseUrl; 
+  static String get baseUrl => AppConfig.baseUrl; 
 
   Future<AppConfigModel?> getAppConfig() async {
     try {

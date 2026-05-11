@@ -1,18 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/evaluation_provider.dart';
+import '../config/app_config.dart';
 import 'evaluation_wizard_screen.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
   // ============ BẢNG MÀU NUTRIHEALTH ============
-  // Lấy trực tiếp từ logo: xanh dương sáng (trái tim y tế) + xanh lá tươi (con người)
-  static const Color nhBlue = Color(0xFF2196F3);       // Xanh dương sáng - chủ đạo
-  static const Color nhBlueDark = Color(0xFF1976D2);    // Xanh dương đậm hơn
-  static const Color nhBlueLight = Color(0xFF42A5F5);   // Xanh dương nhạt
-  static const Color nhGreen = Color(0xFF66BB6A);       // Xanh lá tươi - accent
-  static const Color nhGreenDark = Color(0xFF43A047);   // Xanh lá đậm
+  static const Color nhBlue = Color(0xFF2196F3);       
+  static const Color nhBlueDark = Color(0xFF1976D2);    
+  static const Color nhBlueLight = Color(0xFF42A5F5);   
+  static const Color nhGreen = Color(0xFF66BB6A);       
+  static const Color nhGreenDark = Color(0xFF43A047);   
+
+  int _tapCount = 0;
+
+  void _onSettingsTapped() {
+    _tapCount++;
+    if (_tapCount >= 5) {
+      _tapCount = 0;
+      _showSettingsDialog();
+    }
+  }
+
+  void _showSettingsDialog() {
+    final TextEditingController urlController = TextEditingController(text: AppConfig.baseUrl);
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Cấu hình Máy chủ'),
+          content: TextField(
+            controller: urlController,
+            decoration: const InputDecoration(
+              labelText: 'Địa chỉ IP hoặc Tên miền Server',
+              hintText: 'http://192.168.1.xxx/api',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Hủy'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final newUrl = urlController.text.trim();
+                if (newUrl.isNotEmpty) {
+                  await AppConfig.saveBaseUrl(newUrl);
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    // Reload config with new IP
+                    Provider.of<EvaluationProvider>(context, listen: false).init();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Đã lưu cấu hình và kết nối lại!')),
+                    );
+                  }
+                }
+              },
+              child: const Text('Lưu'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +86,14 @@ class WelcomeScreen extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF1E88E5),  // Xanh dương tươi sáng (top)
-              Color(0xFF42A5F5),  // Xanh dương nhạt hơn (bottom)
+              Color(0xFF1E88E5),  
+              Color(0xFF42A5F5),  
             ],
           ),
         ),
         child: Stack(
           children: [
-            // Decorative soft circles - tạo chiều sâu
+            // Decorative soft circles
             Positioned(
               top: -120,
               right: -80,
@@ -60,7 +118,7 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            // Soft green accent circle (phản ánh xanh lá trong logo)
+            // Soft green accent circle
             Positioned(
               top: 60,
               left: -40,
@@ -74,11 +132,29 @@ class WelcomeScreen extends StatelessWidget {
               ),
             ),
             
+            // Cài đặt ẩn góc trên phải
+            Positioned(
+              top: 40,
+              right: 20,
+              child: GestureDetector(
+                onTap: _onSettingsTapped,
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  color: Colors.transparent, // Để dễ bấm hơn
+                  child: Icon(
+                    Icons.settings,
+                    color: Colors.white.withOpacity(0.3),
+                    size: 24,
+                  ),
+                ),
+              ),
+            ),
+            
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Logo trong khung trắng bo tròn
+                  // Logo
                   Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(

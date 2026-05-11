@@ -1,3 +1,4 @@
+using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ServiceQuality.Domain.Entities;
@@ -31,10 +32,11 @@ public class AdminUserConfiguration : IEntityTypeConfiguration<AdminUser>
         {
             Id = 1,
             Username = "admin",
-            Password = "$2a$11$Z1n47x.y6f5S7n1x7Uo1xeG6D/k6gV7gJ5Q0V5z8g4G4l8Q4q6s6O", 
-            FullName = "Super Administrator",
+            //Password = "$2a$11$Z1n47x.y6f5S7n1x7Uo1xeG6D/k6gV7gJ5Q0V5z8g4G4l8Q4q6s6O", 
+            Password = BCrypt.Net.BCrypt.HashPassword("Admin@2026"),
+            FullName = "Administrator",
             Email = "admin@atlink.asia",
-            Role = AdminRole.SuperAdmin,
+            Role = AdminRole.Admin,
             IsActive = true,
             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc)
         });

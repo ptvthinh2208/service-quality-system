@@ -104,6 +104,13 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+// THIẾT LẬP SUB-FOLDER LINH HOẠT: Đọc từ appsettings.json
+var pathBase = app.Configuration["PathBase"];
+if (!string.IsNullOrEmpty(pathBase))
+{
+    app.UsePathBase(pathBase);
+}
+
 // ========== MIDDLEWARE PIPELINE ==========
 
 // Auto-migrate và seed database khi khởi động
@@ -112,14 +119,14 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated(); // Dùng Migrations thay thế khi production
 
-    // Rescue: Đảm bảo tài khoản admin luôn có mật khẩu admin123 chuẩn mã hóa
-    var admin = db.AdminUsers.FirstOrDefault(u => u.Username == "admin");
-    if (admin != null)
-    {
-        admin.Password = BCrypt.Net.BCrypt.HashPassword("admin123");
-        admin.IsActive = true;
-        db.SaveChanges();
-    }
+    // // Rescue: Đảm bảo tài khoản admin luôn có mật khẩu mới chuẩn mã hóa
+    // var admin = db.AdminUsers.FirstOrDefault(u => u.Username == "admin");
+    // if (admin != null)
+    // {
+    //     admin.Password = BCrypt.Net.BCrypt.HashPassword("admin@Nutrihealth2026");
+    //     admin.IsActive = true;
+    //     db.SaveChanges();
+    // }
 }
 
 if (app.Environment.IsDevelopment())
@@ -133,15 +140,21 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseSerilogRequestLogging();
-// app.UseHttpsRedirection(); // Tạm thời tắt để phục vụ mobile app kết nối HTTP
+// app.UseHttpsRedirection(); 
 
-// CORS: public endpoints dùng MobilePolicy, admin dùng AppCorsPolicy
+// 1. Phục vụ file tĩnh (Angular)
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.UseCors("AppCorsPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// 2. Fallback về index.html nếu không khớp route API (Dành cho Angular Routing)
+app.MapFallbackToFile("index.html");
 
 // Health check
 app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }));

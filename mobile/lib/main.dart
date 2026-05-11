@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'providers/evaluation_provider.dart';
 import 'screens/welcome_screen.dart';
+import 'config/app_config.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -13,9 +14,10 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-void main() {
+void main() async {
   HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
+  await AppConfig.loadBaseUrl();
   runApp(
     MultiProvider(
       providers: [
